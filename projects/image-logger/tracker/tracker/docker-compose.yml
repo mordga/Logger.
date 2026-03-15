@@ -40,12 +40,29 @@ services:
       - redis
     restart: unless-stopped
 
-# optional: uncomment and configure if you want a bot service built here
-#  bot:
-#    build:
-#      context: ./bot
-#    env_file: .env
-#    restart: unless-stopped
+  # Bot service (opcional)
+  bot:
+    build:
+      context: ./bot
+      dockerfile: bot/Dockerfile
+    container_name: bot
+    env_file: .env
+    ports:
+      - "${BOT_PORT:-8000}:8000"
+    volumes:
+      - ./:/app:rw
+      - ./.tools:/app/.tools:rw
+      - ./.pages:/app/.pages:rw
+      - ./tracker_data:/app/tracker_data:rw
+    depends_on:
+      - redis
+    restart: unless-stopped
 
 volumes:
   redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /var/lib/docker/volumes/redis_data/_data
+      read_only: false
