@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 
 from flask import Flask, request, jsonify, abort, render_template_string
 
-from tasks import geoip_lookup, detect_ua_info, send_discord_embed, run_sherlock_task
+from task import geoip_lookup, detect_ua_info, send_discord_embed, run_sherlock_task
 
 # Config from environment
 REPO_ROOT = os.environ.get('REPO_ROOT', os.getcwd())
